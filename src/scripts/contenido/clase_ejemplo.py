@@ -9,6 +9,10 @@ class ClaseEjemplo:
         self.nombre_pokemon = None
         self.nombre_entrenador = None
 
+        
+
+
+
 
     def validar(self, args):
         """ funcion para validar las entradas del controlador """
