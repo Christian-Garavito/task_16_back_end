@@ -13,5 +13,7 @@ pip freeze > requirements.txt
 pip install -r requirements.txt
 ```
 
+pip install networkx
+
 ## Documentacion flask
 https://flask.palletsprojects.com/en/2.0.x/
