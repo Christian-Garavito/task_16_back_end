@@ -23,7 +23,7 @@ def construir_grafo_desde_vuelos(results):
         destino = vuelo["vuelo_destino"]
         precio = vuelo["precio_vuelo"]
         duracion = vuelo["duracion_vuelo"]
-        hora_salida = datetime.strptime(vuelo["hora_salida"], '%Y-%m-%d %H:%M:%S')
+        hora_salida = vuelo["hora_salida"]
         hora_llegada = hora_salida + timedelta(hours=duracion)
 
 
@@ -57,10 +57,11 @@ def encontrar_ruta_optima_dijkstra(results, origen, destino, orden, max_escalas)
     Returns:
     - Ruta óptima como lista de diccionarios con detalles del vuelo.
     """
+
     grafo_vuelos = construir_grafo_desde_vuelos(results)
     print(grafo_vuelos.edges)
 
-
+    
     # Crear una cola de prioridad para Dijkstra
     cola_prioridad = []
     heapq.heappush(cola_prioridad, (0, origen, 0, [origen], [], 0.0))  # (costo, nodo_actual, escalas, camino, detalles_vuelos, tiempo_total)
@@ -117,25 +118,25 @@ def encontrar_ruta_optima_dijkstra(results, origen, destino, orden, max_escalas)
     return None, None, None
 
 
-# Ejemplo de uso para testeo
-if __name__ == "__main__":
-    results = [
-        {"vuelo_origen": "A", "vuelo_destino": "B", "precio_vuelo": 20, "duracion_vuelo": 1, "hora_salida": "2024-07-01 08:00:00"},
-        {"vuelo_origen": "B", "vuelo_destino": "C", "precio_vuelo": 10, "duracion_vuelo": 1, "hora_salida": "2024-07-01 09:00:00"},
-        {"vuelo_origen": "C", "vuelo_destino": "D", "precio_vuelo": 30, "duracion_vuelo": 1, "hora_salida": "2024-07-01 10:00:00"},
-        {"vuelo_origen": "B", "vuelo_destino": "E", "precio_vuelo": 10, "duracion_vuelo": 1, "hora_salida": "2024-07-01 11:00:00"},
-        {"vuelo_origen": "C", "vuelo_destino": "E", "precio_vuelo": 50, "duracion_vuelo": 1, "hora_salida": "2024-07-01 12:00:00"},
-    ]
+# # Ejemplo de uso para testeo
+# if __name__ == "__main__":
+#     results = [
+#         {"vuelo_origen": "A", "vuelo_destino": "B", "precio_vuelo": 20, "duracion_vuelo": 1, "hora_salida": "2024-07-01 08:00:00"},
+#         {"vuelo_origen": "B", "vuelo_destino": "C", "precio_vuelo": 10, "duracion_vuelo": 1, "hora_salida": "2024-07-01 09:00:00"},
+#         {"vuelo_origen": "C", "vuelo_destino": "D", "precio_vuelo": 30, "duracion_vuelo": 1, "hora_salida": "2024-07-01 10:00:00"},
+#         {"vuelo_origen": "B", "vuelo_destino": "E", "precio_vuelo": 10, "duracion_vuelo": 1, "hora_salida": "2024-07-01 11:00:00"},
+#         {"vuelo_origen": "C", "vuelo_destino": "E", "precio_vuelo": 50, "duracion_vuelo": 1, "hora_salida": "2024-07-01 12:00:00"},
+#     ]
 
 
-    ruta, costo_total, tiempo_total = encontrar_ruta_optima_dijkstra(results, "A", "E", "precio", 3)
-    print("Ruta óptima por precio:", ruta)
-    print("Costo total por precio:", costo_total)
+#     ruta, costo_total, tiempo_total = encontrar_ruta_optima_dijkstra(results, "A", "E", "precio", 3)
+#     print("Ruta óptima por precio:", ruta)
+#     print("Costo total por precio:", costo_total)
 
 
-    ruta, costo_total, tiempo_total = encontrar_ruta_optima_dijkstra(results, "A", "E", "tiempo", 4)
-    print("Ruta óptima por tiempo:", ruta)
-    print("Costo total por tiempo (horas):", tiempo_total)
+#     ruta, costo_total, tiempo_total = encontrar_ruta_optima_dijkstra(results, "A", "E", "tiempo", 4)
+#     print("Ruta óptima por tiempo:", ruta)
+#     print("Costo total por tiempo (horas):", tiempo_total)
 
 
 

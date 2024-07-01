@@ -17,7 +17,7 @@ class Query(Connection):
 
         # Convertir la fecha de entrada a datetime para obtener el siguiente día
         fecha_seleccionada = datetime.strptime(fecha, '%Y-%m-%d  %H:%M:%S' ) 
-        fecha_siguiente = fecha_seleccionada + timedelta(days=30) 
+        fecha_siguiente = fecha_seleccionada + timedelta(days=4) 
         fecha_siguiente_str = fecha_siguiente.strftime('%Y-%m-%d') 
         query = f""" SELECT vuelo_origen, vuelo_destino, precio_vuelo, duracion_vuelo, hora_salida 
                 FROM public.tabla_vuelos 
