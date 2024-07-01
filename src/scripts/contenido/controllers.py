@@ -1,7 +1,7 @@
 from flask import request
 import psycopg2
 from .queries import Query
-from .manejo_grafos import encontrar_ruta_optima
+from .manejo_grafos import encontrar_ruta_optima_dijkstra
 
 
 # ------------------------------tabla vuelos---------------------
@@ -13,6 +13,8 @@ def obtener_vuelos():
         destino = entrada["destino"]
         fecha = entrada["fecha"]
         orden = entrada["orden"]
+        escalas = int(entrada["escalas"])
+        
 
         if origen == destino:
             raise ValueError("El Origen debe ser diferente al destino")
@@ -27,9 +29,9 @@ def obtener_vuelos():
         results = Query().buscar_tabla_vuelos(fecha)
 
         # Encontrar ruta óptima según el orden especificado
-        ruta_optima = encontrar_ruta_optima(results, origen, destino, orden)
+        ruta_optima = encontrar_ruta_optima_dijkstra(results, origen, destino, orden,escalas)
 
-        if ruta_optima:
+        if ruta_optima[0]:
             return {
                 "msg": f"Ruta óptima encontrada según {orden}",
                 "codigo": 1,
