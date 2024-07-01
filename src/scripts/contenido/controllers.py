@@ -14,11 +14,17 @@ def obtener_vuelos():
         
         entrada = request.args
         print("--------------------------------------------------")   
-        print(entrada)
+        origen = entrada['origen'] 
+        destino = entrada['destino'] 
+        fecha = entrada['fecha'] 
+        orden = entrada['orden']
+
+
+
     except Exception as exc:
         return {"msg": str(exc), "codigo": 0, "status": False, "obj": {}}
     try:
-        results = Query().buscar_tabla_vuelos(entrada)
+        results = Query().buscar_tabla_vuelos(fecha)
     except psycopg2.Error as db_error:
         return {
             "msg": f"DB error: {str(db_error)}",
