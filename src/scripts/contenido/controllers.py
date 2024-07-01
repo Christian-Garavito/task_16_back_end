@@ -14,6 +14,11 @@ def obtener_vuelos():
         fecha = entrada["fecha"]
         orden = entrada["orden"]
 
+        if origen == destino:
+            raise ValueError("El Origen debe ser diferente al destino")
+
+
+
     except Exception as exc:
         return {"msg": str(exc), "codigo": 0, "status": False, "obj": {}}
 
