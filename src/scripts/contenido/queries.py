@@ -1,6 +1,7 @@
 """ Queries del servicio 1 """
 
 from src.scripts.connection import Connection
+from datetime import datetime, timedelta
 
 
 class Query(Connection):
@@ -14,11 +15,14 @@ class Query(Connection):
         It does nothing.
         """
 
-        query = f"""SELECT vuelo_origen, vuelo_destino, precio_vuelo, duracion_vuelo, hora_salida 
-                FROM public.tabla_vuelos WHERE hora_salida >= '{fecha}'"""
+        # Convertir la fecha de entrada a datetime para obtener el siguiente día
+        fecha_seleccionada = datetime.strptime(fecha, '%Y-%m-%d  %H:%M:%S' ) 
+        fecha_siguiente = fecha_seleccionada + timedelta(days=30) 
+        fecha_siguiente_str = fecha_siguiente.strftime('%Y-%m-%d') 
+        query = f""" SELECT vuelo_origen, vuelo_destino, precio_vuelo, duracion_vuelo, hora_salida 
+                FROM public.tabla_vuelos 
+                WHERE hora_salida >= '{fecha}' AND hora_salida < '{fecha_siguiente_str}'; """
 
-
-        print(query)
         # contextos de python tema para estudiar
         # el cursor y la conexion solo funciona dentro del with
         with self._open_connection() as conn:
