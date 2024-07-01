@@ -11,6 +11,7 @@ def construir_grafo_desde_vuelos(results):
     Returns:
     - grafo: Grafo construido a partir de los vuelos.
     """
+    # grafo
     grafo = nx.DiGraph()
 
     for vuelo in results:
