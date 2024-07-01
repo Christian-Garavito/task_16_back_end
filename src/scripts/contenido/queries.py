@@ -8,34 +8,17 @@ class Query(Connection):
 
     # ------------------------tabla de vuelos------------------------------------------
     # 1. funcion obtener contenido--------------------------------------------------------------
-    def buscar_tabla_vuelos(self, filtros):
+    # filtros
+    def buscar_tabla_vuelos(self, fecha):
         """
         It does nothing.
         """
-    
 
-        query = "SELECT x.* FROM public.tabla_vuelos x"
-        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        if filtros:
-            print(f"Filtros:{filtros}")
-            condiciones = []
-            for columna, valor in filtros.items():
-                if columna == "pagina":
-                    pagina = valor
-                    # print(pagina)
-                elif columna == "limit":
-                    limit = valor
-                else:
-                    condiciones.append(f"{columna} = '{valor}'")
+        query = f"""SELECT vuelo_origen, vuelo_destino, precio_vuelo, duracion_vuelo, hora_salida 
+                FROM public.tabla_vuelos WHERE hora_salida >= '{fecha}'"""
 
-            if condiciones:
-                query += " WHERE " + " AND ".join(condiciones)
 
-        
-        # ordenar la tabla
-        query += " ORDER BY pk_id_vuelo"
         print(query)
-
         # contextos de python tema para estudiar
         # el cursor y la conexion solo funciona dentro del with
         with self._open_connection() as conn:
@@ -44,17 +27,11 @@ class Query(Connection):
 
                 response = cursor.fetchall()
 
-                # print(response)
-                # print(cursor.description)
-
                 columnas = [columna.name for columna in cursor.description or []]
 
-       
                 objeto_contenidos = [
                     {columnas[index]: item for index, item in enumerate(tupla)}
                     for tupla in response
                 ]
-
-                # print(objeto_contenidos)
 
                 return objeto_contenidos
