@@ -12,12 +12,12 @@ class Query(Connection):
         """
         It does nothing.
         """
-        pagina = 1
-        limit = 20
+    
 
-        query = "SELECT x.* FROM public.tabla_vuelos x;"
-        # print("--------------------------------------------------------")
+        query = "SELECT x.* FROM public.tabla_vuelos x"
+        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
         if filtros:
+            print(f"Filtros:{filtros}")
             condiciones = []
             for columna, valor in filtros.items():
                 if columna == "pagina":
@@ -31,14 +31,10 @@ class Query(Connection):
             if condiciones:
                 query += " WHERE " + " AND ".join(condiciones)
 
-        pagina = int(limit) * (int(pagina) - 1)
+        
         # ordenar la tabla
-        # query += " ORDER BY pk_id_peliculas"
-        #query += f" ORDER BY pk_id_vuelo OFFSET {pagina} LIMIT {limit}"
+        query += " ORDER BY pk_id_vuelo"
         print(query)
-        # pagina la trae como un string y para poderlo perar hay que
-        # query += f" OFFSET {(paginas-1)*int(limit)} LIMIT {limit}"
-        # print(query)
 
         # contextos de python tema para estudiar
         # el cursor y la conexion solo funciona dentro del with
@@ -53,12 +49,7 @@ class Query(Connection):
 
                 columnas = [columna.name for columna in cursor.description or []]
 
-                # objeto_pk = []
-                # for tupla in response:
-                #     obj = {}
-                #     for index, item in enumerate(tupla):
-                #         obj[columnas[index]] = item
-                #     objeto_pk.append(obj)
+       
                 objeto_contenidos = [
                     {columnas[index]: item for index, item in enumerate(tupla)}
                     for tupla in response

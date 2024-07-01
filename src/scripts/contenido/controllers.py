@@ -18,7 +18,7 @@ def obtener_vuelos():
     except Exception as exc:
         return {"msg": str(exc), "codigo": 0, "status": False, "obj": {}}
     try:
-        results,hay_siguiente = Query().buscar_tabla_vuelos(entrada)
+        results = Query().buscar_tabla_vuelos(entrada)
     except psycopg2.Error as db_error:
         return {
             "msg": f"DB error: {str(db_error)}",
@@ -33,7 +33,7 @@ def obtener_vuelos():
         "msg": "Consulta satisfactoria",
         "codigo": 0,
         "status": True,
-        "obj": {"results" : results, "hay_sigiente": hay_siguiente},
+        "obj": {"results" : results},
         
     }
 #------------------------------tabla vuelos---------------------
