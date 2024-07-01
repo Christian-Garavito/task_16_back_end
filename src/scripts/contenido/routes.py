@@ -13,8 +13,8 @@ servicio_1_blueprint = Blueprint(
 
 #------------Rutas de contenido----------------------
 servicio_1_blueprint.add_url_rule(
-    "/contenidos",
-    view_func=controllers.crud_contenido,
+    "/vuelos",
+    view_func=controllers.crud_vuelos,
     methods=["GET"]
 )
 

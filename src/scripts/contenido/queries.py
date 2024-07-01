@@ -6,26 +6,16 @@ from src.scripts.connection import Connection
 class Query(Connection):
     """> The Query class is a subclass of the Connection class"""
 
-    # ------------------------tabla_contenido_imdb------------------------------------------
+    # ------------------------tabla de vuelos------------------------------------------
     # 1. funcion obtener contenido--------------------------------------------------------------
-    def buscar_contenidos(self, filtros):
+    def buscar_tabla_vuelos(self, filtros):
         """
         It does nothing.
         """
         pagina = 1
-        limit = 5
+        limit = 20
 
-        query = """SELECT 
-                        tc.pk_id_peliculas
-                        ,tc.titulo_pelicula
-                        ,tc.ano_pelicula
-                        ,tc.director_pelicula
-                        ,tc.valor_pelicula
-                        ,tc.fk_id_tipo_contenido 
-                        ,ttc.tipo_contenido
-                    FROM tabla_contenido_imdb tc
-                    INNER JOIN tipo_contenido ttc
-                    ON tc.fk_id_tipo_contenido = ttc.pk_id_tipo_contenido"""
+        query = "SELECT x.* FROM public.tabla_vuelos x;"
         # print("--------------------------------------------------------")
         if filtros:
             condiciones = []
@@ -42,23 +32,38 @@ class Query(Connection):
                 query += " WHERE " + " AND ".join(condiciones)
 
         pagina = int(limit) * (int(pagina) - 1)
-
         # ordenar la tabla
-        query += f" ORDER BY pk_id_peliculas OFFSET {pagina} "
-        
+        # query += " ORDER BY pk_id_peliculas"
+        #query += f" ORDER BY pk_id_vuelo OFFSET {pagina} LIMIT {limit}"
+        print(query)
+        # pagina la trae como un string y para poderlo perar hay que
+        # query += f" OFFSET {(paginas-1)*int(limit)} LIMIT {limit}"
+        # print(query)
+
         # contextos de python tema para estudiar
         # el cursor y la conexion solo funciona dentro del with
         with self._open_connection() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(query)
 
-                response = cursor.fetchmany(int(limit))
+                response = cursor.fetchall()
+
+                # print(response)
+                # print(cursor.description)
 
                 columnas = [columna.name for columna in cursor.description or []]
 
+                # objeto_pk = []
+                # for tupla in response:
+                #     obj = {}
+                #     for index, item in enumerate(tupla):
+                #         obj[columnas[index]] = item
+                #     objeto_pk.append(obj)
                 objeto_contenidos = [
                     {columnas[index]: item for index, item in enumerate(tupla)}
                     for tupla in response
                 ]
-                return objeto_contenidos, bool(cursor.fetchone())
 
+                # print(objeto_contenidos)
+
+                return objeto_contenidos
